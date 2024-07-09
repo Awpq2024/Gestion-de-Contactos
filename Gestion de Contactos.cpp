@@ -18,13 +18,16 @@ void agregarContacto(contactoEmail contacto[], int &numeroContactos){
 	getline(cin,contacto[numeroContactos].nombreCompleto);
 	cout<<"Ingrese la edad: ";
 	cin>>contacto[numeroContactos].edad;
+	cin.ignore();
 	cout<<"Ingrese el telefono: ";
 	cin>>contacto[numeroContactos].telefono;
 	cin.ignore();
 	cout<<"Ingrese el Email: ";
 	cin>>contacto[numeroContactos].email;
+	cin.ignore();
 	cout<<"Ingrese la nacionalidad: ";
 	cin>>contacto[numeroContactos].nacionalidad;
+	cin.ignore();
 	cout<<"Contacto numero "<<(numeroContactos+1)<<" registrado con exito"<<endl;
 	cout<<"\n";
 	numeroContactos++;
@@ -72,6 +75,33 @@ void eliminarContacto(contactoEmail contacto[],int &numeroContactos){
 	cout<<endl;
 	
 }
+void mostrarContactosPorServidor(contactoEmail contacto[], int numeroContactos){
+	if (numeroContactos==0){
+		cout<<"\nNo existen contactos registrados de momento"<<endl;
+		cout<<endl;
+		return;
+	}
+	for (int i=0;i< (numeroContactos-1);i++){
+		for (int j=i+1;j< numeroContactos;j++){
+			string servidor_i=contacto[i].email.substr(contacto[i].email.find('@')+1);
+			string servidor_j=contacto[j].email.substr(contacto[j].email.find('@')+1);
+			if (servidor_i>servidor_j){
+				contactoEmail auxiliar=contacto[i];
+				contacto[i]=contacto[j];
+				contacto[j]=auxiliar;
+			}
+		}	
+	}
+	for (int i=0;i < numeroContactos;i++){
+		cout<<"\nContacto numero "<<(i+1)<<": ";
+		cout<<"\nNombre Completo: "<<contacto[i].nombreCompleto;
+		cout<<"\nEdad: "<<contacto[i].edad;
+		cout<<"\nTelefono: "<<contacto[i].telefono;
+		cout<<"\nEmail: "<<contacto[i].email;
+		cout<<"\nNacionalidad: "<<contacto[i].nacionalidad<<endl<<endl;
+	}		
+}	
+
 int main(){
 	contactoEmail contacto[limiteContactos];
 	int numeroContactos=0;
@@ -81,7 +111,8 @@ int main(){
 		cout<<"1. Agregar un contacto"<<endl;
 		cout<<"2. Mostrar lista de contactos registrados al momento"<<endl;
 		cout<<"3. Eliminar un contacto registrado"<<endl;
-		cout<<"4. Salir del programa"<<endl;
+		cout<<"4. Mostrar lista de Contactos ordenados por servidor"<<endl;
+		cout<<"5. Salir del programa"<<endl;
 		cout<<"Seleccione una opcion: ";
 		cin>>opcion;
 		cin.ignore();
@@ -96,12 +127,15 @@ int main(){
 				eliminarContacto(contacto,numeroContactos);
 				break;
 			case 4:
+				mostrarContactosPorServidor(contacto,numeroContactos);
+				break;
+			case 5:
 				cout<<"\nSaliendo del programa...";
 				break;
 			default:
-				cout<<"Opcion no valida, seleccione una opcion del 1 al 2."<<endl;
+				cout<<"Opcion no valida, seleccione una opcion del 1 al 5."<<endl;
 				break;
 		}
-	}while(opcion!=4);
+	}while(opcion!=5);
 	return 0;
 }
