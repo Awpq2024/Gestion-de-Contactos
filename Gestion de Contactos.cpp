@@ -44,32 +44,64 @@ void mostrarContactos(contactoEmail contacto[],int numeroContactos){
 		}
 	}
 }
+void eliminarContacto(contactoEmail contacto[],int &numeroContactos){
+	if (numeroContactos==0){
+		cout<<"\nNo hay contactos que hayan sido registrados de momento"<<endl;
+		return;
+	}
+	string eliminarContacto;
+	cout<<"\nIngrese el nombre del contacto que desea eliminar: ";
+	getline(cin, eliminarContacto);
+	int indice=-1;
+	for(int i=0;i<numeroContactos;i++){
+		if(contacto[i].nombreCompleto==eliminarContacto){
+			indice=i;
+			break;
+		}
+	}
+	if (indice==-1){
+		cout<<"\nEl contacto no fue encontrado"<<endl;
+		cout<<endl;
+		return;
+	}
+	for(int i=indice;i < (numeroContactos-1);i++){
+		contacto[i]=contacto[i+1];
+	}
+	numeroContactos--;
+	cout<<"El contacto fue eliminado"<<endl;
+	cout<<endl;
+	
+}
 int main(){
 	contactoEmail contacto[limiteContactos];
-	int numeroContacto=0;
+	int numeroContactos=0;
 	int opcion;
 	do{
 		cout<<"Menu de contactos Email"<<endl;
 		cout<<"1. Agregar un contacto"<<endl;
 		cout<<"2. Mostrar lista de contactos registrados al momento"<<endl;
-		cout<<"3. Salir del programa"<<endl;
+		cout<<"3. Eliminar un contacto registrado"<<endl;
+		cout<<"4. Salir del programa"<<endl;
 		cout<<"Seleccione una opcion: ";
 		cin>>opcion;
 		cin.ignore();
 		switch (opcion){
 			case 1:
-				agregarContacto(contacto,numeroContacto);
+				agregarContacto(contacto,numeroContactos);
 				break;
 			case 2:
-				mostrarContactos(contacto,numeroContacto);
+				mostrarContactos(contacto,numeroContactos);
 				break;
 			case 3:
+				eliminarContacto(contacto,numeroContactos);
+				break;
+			case 4:
 				cout<<"\nSaliendo del programa...";
 				break;
 			default:
 				cout<<"Opcion no valida, seleccione una opcion del 1 al 2."<<endl;
 				break;
 		}
-	}while(opcion!=3);
+	}while(opcion!=4);
 	return 0;
 }
